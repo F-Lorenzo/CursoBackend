@@ -3,13 +3,21 @@ import fs from "fs";
 const array = [];
 
 class Product {
-  constructor(name, price, id) {
+  constructor(name, price) {
     this.nombre = name;
-    this.id = id;
     this.precio = price;
   }
 
-  save(producto) {}
+  save(product) {
+    const id = 0;
+    if (product.id !== undefined) {
+      throw new Error("El producto no tine id");
+    } else {
+      for (id in product) {
+        product.id += id;
+      }
+    }
+  }
   getById(id) {
     let products = array.filter((product) => product.id === id);
     return products;
@@ -17,7 +25,7 @@ class Product {
   getAll() {
     let getProducts = async () => {
       try {
-        const content = await fs.promisis.readFile("./productos.txt", "utf8");
+        const content = await fs.promisis.writeFile("./productos.txt", "utf8");
         const objContent = JSON.parse(content);
         console.log(objContent);
         return objContent;
@@ -28,7 +36,20 @@ class Product {
   }
   deletById(id) {
     let products = array.filter((product) => product.id === id);
-    array.delete(products);
+    products.delete();
   }
-  deletAll() {}
+  deletAll() {
+    let productsToDelete = array.filter((product) => product);
+    array.delete(productsToDelete);
+    async function newTxt() {
+      try {
+        content = await fs.promisis.writeFile("./productos.txt", "utf8");
+        console.log(content);
+      } catch (err) {
+        throw new Error(err.message);
+      }
+    }
+  }
 }
+
+const product1 = new Product(product1, "100");
