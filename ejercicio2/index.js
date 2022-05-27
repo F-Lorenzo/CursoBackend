@@ -53,5 +53,5 @@ class Product {
   }
 }
 
-const product1 = new Product(product1, "100");
+const product1 = new Product("product1", "100");
 console.log(product1);
