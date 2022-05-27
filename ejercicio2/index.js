@@ -16,6 +16,7 @@ class Product {
       for (id in product) {
         product.id += id;
       }
+      product.push(product.id);
     }
   }
   getById(id) {
@@ -53,3 +54,4 @@ class Product {
 }
 
 const product1 = new Product(product1, "100");
+console.log(product1);
