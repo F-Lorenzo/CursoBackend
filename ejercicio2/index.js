@@ -2,7 +2,7 @@ import fs from "fs";
 
 const baseDatos = JSON.parse(fs.readFileSync("./listaProductos.json", "utf-8"));
 
-class Producto {
+class Productos {
   constructor(producto) {
     this.listaProductos = producto;
   }
@@ -17,7 +17,9 @@ class Producto {
       listaProductos.push(obj);
 
       listaProductos.forEach((producto) => {
-        if (producto.id > id) id = producto.id;
+        if (producto.id > id) {
+          id = producto.id;
+        }
       });
       obj.id = id + 1;
       await fs.promisis.writeFile(
@@ -64,16 +66,15 @@ class Producto {
   }
   async deletById(idNumber) {
     try {
-      const listaProductos = this.listaProductos;
       const data = JSON.parse(
         await fs.promises.readFile("./listaProductos.json", "utf-8")
       );
-      listaProductos = data;
-      let producto = listaProductos.filter(
+      this.listaProductos = data;
+      let producto = this.listaProductos.filter(
         (producto) => producto.id === idNumber
       );
       if (producto) {
-        listaProductos.delete(producto);
+        this.listaProductos.delete(producto);
         console.log(`el producto con id ${idNumber} fue eliminado`);
       } else {
         console.log("No existe producto con ese id asignado");
@@ -99,16 +100,16 @@ class Producto {
     }
   }
 }
-const productos = new Producto(baseDatos);
+const productos = new Productos(baseDatos);
 
 const newProduct_5 = {
-  title: "iPhone 11",
+  title: "iPhone 13",
   price: 15000,
   thumbnail:
     "https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone12-digitalmat-gallery-2-202111?wid=364&hei=333&fmt=png-alpha&.v=1635178709000",
 };
 
 await productos.save(newProduct_5);
-await productos.getAll();
-await productos.getById(2);
-await productos.deletById(4);
+// await productos.getAll();
+// await productos.getById(2);
+// await productos.deletById(4);
