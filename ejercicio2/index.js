@@ -1,57 +1,114 @@
 import fs from "fs";
 
-const array = [];
+const baseDatos = JSON.parse(fs.readFileSync("./listaProductos.json", "utf-8"));
 
-class Product {
-  constructor(name, price) {
-    this.nombre = name;
-    this.precio = price;
+class Producto {
+  constructor(producto) {
+    this.listaProductos = producto;
   }
 
-  save(product) {
+  async save(obj) {
     const id = 0;
-    if (product.id !== undefined) {
-      throw new Error("El producto no tine id");
-    } else {
-      for (id in product) {
-        product.id += id;
-      }
-      product.push(product.id);
+    try {
+      const data = JSON.parse(
+        await fs.promises.readFile("./listaProductos.json", "utf-8")
+      );
+      let listaProductos = data;
+      listaProductos.push(obj);
+
+      listaProductos.forEach((producto) => {
+        if (producto.id > id) id = producto.id;
+      });
+      obj.id = id + 1;
+      await fs.promisis.writeFile(
+        "./listaProductos",
+        JSON.stringify(listaProductos, null, 2)
+      );
+    } catch (err) {
+      console.error(err);
     }
   }
-  getById(id) {
-    let products = array.filter((product) => product.id === id);
-    return products;
-  }
-  getAll() {
-    let getProducts = async () => {
-      try {
-        const content = await fs.promisis.writeFile("./productos.txt", "utf8");
-        const objContent = JSON.parse(content);
-        console.log(objContent);
-        return objContent;
-      } catch (err) {
-        throw new Error(err.message);
+  async getById(idNumber) {
+    try {
+      const data = JSON.parse(
+        await fs.promises.readFile("./listaProductos.json", "utf-8")
+      );
+      this.listaProductos = data;
+      let producto = this.listaProductos.filter(
+        (producto) => producto.id === idNumber
+      );
+      if (producto) {
+        console.log(producto);
+      } else {
+        console.log("No existe producto con ese id asignado");
       }
-    };
+    } catch (err) {
+      console.log(err);
+    }
   }
-  deletById(id) {
-    let products = array.filter((product) => product.id === id);
-    products.delete();
-  }
-  deletAll() {
-    let productsToDelete = array.filter((product) => product);
-    array.delete(productsToDelete);
-    async function newTxt() {
-      try {
-        content = await fs.promisis.writeFile("./productos.txt", "utf8");
-        console.log(content);
-      } catch (err) {
-        throw new Error(err.message);
+  async getAll() {
+    try {
+      const data = JSON.parse(
+        await fs.promises.readFile("./listaProductos.json", "utf-8")
+      );
+      let productos = data;
+      if (productos.length > 0) {
+        const listaCompleta = productos.map((producto) => producto);
+        console.log(listaCompleta);
+      } else {
+        console.log("No hay productos");
       }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  async deletById(idNumber) {
+    try {
+      const listaProductos = this.listaProductos;
+      const data = JSON.parse(
+        await fs.promises.readFile("./listaProductos.json", "utf-8")
+      );
+      listaProductos = data;
+      let producto = listaProductos.filter(
+        (producto) => producto.id === idNumber
+      );
+      if (producto) {
+        listaProductos.delete(producto);
+        console.log(`el producto con id ${idNumber} fue eliminado`);
+      } else {
+        console.log("No existe producto con ese id asignado");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  async deletAll() {
+    try {
+      const data = JSON.parse(
+        await fs.promises.readFile("./listaProductos.json", "utf-8")
+      );
+      let productos = data;
+      if (productos.length > 0) {
+        const listaCompleta = productos.map((producto) => producto);
+        this.listaProductos.delete(listaCompleta);
+      } else {
+        console.log("No hay productos");
+      }
+    } catch (err) {
+      console.log(err);
     }
   }
 }
+const productos = new Producto(baseDatos);
 
-const product1 = new Product("product1", "100");
-console.log(product1);
+const newProduct_5 = {
+  title: "iPhone 11",
+  price: 15000,
+  thumbnail:
+    "https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone12-digitalmat-gallery-2-202111?wid=364&hei=333&fmt=png-alpha&.v=1635178709000",
+};
+
+await productos.save(newProduct_5);
+await productos.getAll();
+await productos.getById(2);
+await productos.deletById(4);
