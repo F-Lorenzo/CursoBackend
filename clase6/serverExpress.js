@@ -9,15 +9,4 @@ app.get("/", (req, res) => {
 app.listen(PORT, () => {
   console.log(`escuchando en ${PORT}`);
 });
-
-// const express = require("express");
-// app.use(express.json());
-// app.use(express.urlencoded({ extended: true }));
-
-// const PORT = 8080;
-// const app = express();
-
-// const server = app.listen(PORT, () => {
-//   console.log(`server funcionando en port http://localhost:${PORT}`);
-// });
-// server.on("error", (err) => console.error(err));
+server.on("error", (err) => console.log(err));
