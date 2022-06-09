@@ -8,7 +8,7 @@ class Productos {
   }
 
   async save(obj) {
-    const id = 0;
+    let id = 0;
     try {
       const data = JSON.parse(
         await fs.promises.readFile("./listaProductos.json", "utf-8")
@@ -22,9 +22,11 @@ class Productos {
         }
       });
       obj.id = id + 1;
-      await fs.promisis.writeFile(
-        "./listaProductos",
-        JSON.stringify(listaProductos, null, 2)
+      console.log(
+        await fs.promisis.writeFile(
+          "./listaProductos",
+          JSON.stringify(listaProductos, null, 2)
+        )
       );
     } catch (err) {
       console.error(err);
@@ -110,6 +112,3 @@ const newProduct_5 = {
 };
 
 await productos.save(newProduct_5);
-// await productos.getAll();
-// await productos.getById(2);
-// await productos.deletById(4);
