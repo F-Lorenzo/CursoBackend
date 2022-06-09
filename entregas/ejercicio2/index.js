@@ -22,11 +22,14 @@ class Productos {
         }
       });
       obj.id = id + 1;
-      console.log(
-        await fs.promisis.writeFile(
-          "./listaProductos",
-          JSON.stringify(listaProductos, null, 2)
-        )
+      console.log(listaProductos);
+      fs.writeFileSync(
+        "./listaProductos.json",
+        JSON.stringify(listaProductos, null, 2)
+      );
+      fs.writeFileSync(
+        "./listaProductos.txt",
+        JSON.stringify(listaProductos, null, 2)
       );
     } catch (err) {
       console.error(err);
