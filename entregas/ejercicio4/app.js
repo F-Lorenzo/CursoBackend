@@ -1,0 +1,18 @@
+const express = require("express");
+const router = require("./routes.js");
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use("/api", router);
+
+const PORT = 8080;
+const app = express();
+
+/* -------------------------------------------------------------------------- */
+/*                                     app                                    */
+/* -------------------------------------------------------------------------- */
+
+const server = app.listen(PORT, () => {
+  console.log(`server funcionando en port http://localhost:${PORT}`);
+});
+server.on("error", (err) => console.error(err));
