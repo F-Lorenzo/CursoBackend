@@ -22,7 +22,6 @@ class Productos {
         }
       });
       obj.id = id + 1;
-      console.log(listaProductos);
       fs.writeFileSync(
         "./listaProductos.json",
         JSON.stringify(listaProductos, null, 2)
@@ -69,7 +68,7 @@ class Productos {
       console.log(err);
     }
   }
-  async deletById(idNumber) {
+  async deleteById(idNumber) {
     try {
       const data = JSON.parse(
         await fs.promises.readFile("./listaProductos.json", "utf-8")
@@ -79,7 +78,15 @@ class Productos {
         (producto) => producto.id === idNumber
       );
       if (producto) {
-        this.listaProductos.delete(producto);
+        this.listaProductos.splice(this.listaProductos.indexOf(producto));
+        fs.writeFileSync(
+          "./listaProductos.json",
+          JSON.stringify(this.listaProductos, null, 2)
+        );
+        fs.writeFileSync(
+          "./listaProductos.txt",
+          JSON.stringify(this.listaProductos, null, 2)
+        );
         console.log(`el producto con id ${idNumber} fue eliminado`);
       } else {
         console.log("No existe producto con ese id asignado");
@@ -88,7 +95,7 @@ class Productos {
       console.log(err);
     }
   }
-  async deletAll() {
+  async deleteAll() {
     try {
       const data = JSON.parse(
         await fs.promises.readFile("./listaProductos.json", "utf-8")
@@ -96,7 +103,17 @@ class Productos {
       let productos = data;
       if (productos.length > 0) {
         const listaCompleta = productos.map((producto) => producto);
-        this.listaProductos.delete(listaCompleta);
+        console.log(listaCompleta);
+        listaCompleta.splice(0, listaCompleta.length);
+        console.log(listaCompleta);
+        fs.writeFileSync(
+          "./listaProductos.json",
+          JSON.stringify(listaCompleta, null, 2)
+        );
+        fs.writeFileSync(
+          "./listaProductos.txt",
+          JSON.stringify(listaCompleta, null, 2)
+        );
       } else {
         console.log("No hay productos");
       }
@@ -114,4 +131,4 @@ const newProduct_5 = {
     "https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone12-digitalmat-gallery-2-202111?wid=364&hei=333&fmt=png-alpha&.v=1635178709000",
 };
 
-await productos.save(newProduct_5);
+await productos.deleteAll();
