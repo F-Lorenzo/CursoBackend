@@ -7,6 +7,11 @@ class Productos {
     this.listaProductos = producto;
   }
 
+  /**
+   * It reads a JSON file, pushes a new object to the array, and then writes the array back to the JSON
+   * file
+   * @param obj - {
+   */
   async save(obj) {
     let id = 0;
     try {
@@ -34,6 +39,12 @@ class Productos {
       console.error(err);
     }
   }
+  /**
+   * It takes an id number as an argument, reads a JSON file, filters the JSON file for the id number,
+   * and returns the product with that id number.
+   * </code>
+   * @param idNumber - number
+   */
   async getById(idNumber) {
     try {
       const data = JSON.parse(
@@ -52,6 +63,9 @@ class Productos {
       console.log(err);
     }
   }
+  /**
+   * It reads a JSON file, parses it, and then maps the parsed data to a new array.
+   */
   async getAll() {
     try {
       const data = JSON.parse(
@@ -60,7 +74,6 @@ class Productos {
       let productos = data;
       if (productos.length > 0) {
         const listaCompleta = productos.map((producto) => producto);
-        console.log(listaCompleta);
       } else {
         console.log("No hay productos");
       }
@@ -68,6 +81,11 @@ class Productos {
       console.log(err);
     }
   }
+  /**
+   * It takes an id number as an argument, reads the JSON file, filters the array of objects for the
+   * object with the matching id number, and then deletes that object from the array.
+   * @param idNumber - number
+   */
   async deleteById(idNumber) {
     try {
       const data = JSON.parse(
@@ -95,6 +113,8 @@ class Productos {
       console.log(err);
     }
   }
+
+  /* Deleting all the products in the JSON file. */
   async deleteAll() {
     try {
       const data = JSON.parse(
@@ -103,9 +123,7 @@ class Productos {
       let productos = data;
       if (productos.length > 0) {
         const listaCompleta = productos.map((producto) => producto);
-        console.log(listaCompleta);
         listaCompleta.splice(0, listaCompleta.length);
-        console.log(listaCompleta);
         fs.writeFileSync(
           "./listaProductos.json",
           JSON.stringify(listaCompleta, null, 2)
@@ -123,7 +141,5 @@ class Productos {
   }
 }
 const productos = new Productos(baseDatos);
-
-productos.getAll();
 
 module.exports = Productos;
