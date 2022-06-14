@@ -81,6 +81,30 @@ class Productos {
       console.log(err);
     }
   }
+
+  /**
+   * Reads a given JSON file, parses the file to then returns the data from the file
+   */
+
+  static async getAll() {
+    try {
+
+      let data;
+
+      data = JSON.parse(
+        await fs.promises.readFile("./listaProductos.json", "utf-8")
+      );
+      
+      return data;
+
+    }
+
+    catch (err) {
+      console.error(err);
+    }
+
+  }
+
   /**
    * It takes an id number as an argument, reads the JSON file, filters the array of objects for the
    * object with the matching id number, and then deletes that object from the array.
