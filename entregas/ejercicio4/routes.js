@@ -7,13 +7,6 @@ const router = Router();
 /* -------------------------------------------------------------------------- */
 /*                                     Routes                                 */
 /* -------------------------------------------------------------------------- */
-
-class BaseDatos {
-  constructor(producto) {
-    this.baseDatos = producto;
-  }
-}
-
 router
   .route("/productos")
   .get((req, res) => {
@@ -35,8 +28,13 @@ router
 router
   .route("/productos/:id")
   .get((req, res) => {
-    Productos.getById(req.params.id);
+    try {
+      Productos.getById(req.params.id);
+    } catch (err) {
+      console.log(err);
+    }
   })
+
   .put((req, res) => {
     const baseDatos = JSON.parse(
       fs.readFileSync("./listaProductos.json", "utf8")
@@ -55,7 +53,11 @@ router
     }
   })
   .delete((req, res) => {
-    Productos.deletebyId(req.params.id);
+    try {
+      Productos.deletebyId(req.params.id);
+    } catch (err) {
+      console.log(err);
+    }
   });
 
 module.exports = router;
