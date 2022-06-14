@@ -131,4 +131,4 @@ const newProduct_5 = {
     "https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone12-digitalmat-gallery-2-202111?wid=364&hei=333&fmt=png-alpha&.v=1635178709000",
 };
 
-await productos.deleteAll();
+await productos.getAll();
