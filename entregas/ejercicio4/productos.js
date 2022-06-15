@@ -42,26 +42,45 @@ class Productos {
   /**
    * It takes an id number as an argument, reads a JSON file, filters the JSON file for the id number,
    * and returns the product with that id number.
-   * </code>
-   * @param idNumber - number
+   * @param idNumber - product id given from route /productos/:id
    */
-  async getById(idNumber) {
+  static async getById(idNumber) {
+   
+    idNumber = parseInt(idNumber);
+
     try {
-      const data = JSON.parse(
+
+      let data;
+      let producto;
+      
+      data = JSON.parse(
         await fs.promises.readFile("./listaProductos.json", "utf-8")
       );
+      
       this.listaProductos = data;
-      let producto = this.listaProductos.filter(
-        (producto) => producto.id === idNumber
+      
+      // producto 
+      producto = this.listaProductos.filter(
+        (producto) => producto.id == idNumber
       );
+      
       if (producto) {
-        console.log(producto);
-      } else {
+        console.log(`Requested product ${JSON.stringify(producto)}`);
+      
+        return JSON.stringify(producto);
+
+      } 
+
+      else {
         console.log("No existe producto con ese id asignado");
       }
-    } catch (err) {
+
+    } 
+
+    catch (err) {
       console.log(err);
     }
+
   }
   /**
    * It reads a JSON file, parses it, and then maps the parsed data to a new array.
@@ -81,6 +100,30 @@ class Productos {
       console.log(err);
     }
   }
+
+  /**
+   * Reads a given JSON file, parses the file to then returns the data from the file
+   */
+
+  static async getAll() {
+    try {
+
+      let data;
+
+      data = JSON.parse(
+        await fs.promises.readFile("./listaProductos.json", "utf-8")
+      );
+      
+      return data;
+
+    }
+
+    catch (err) {
+      console.error(err);
+    }
+
+  }
+
   /**
    * It takes an id number as an argument, reads the JSON file, filters the array of objects for the
    * object with the matching id number, and then deletes that object from the array.
