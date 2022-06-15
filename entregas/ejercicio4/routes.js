@@ -33,7 +33,13 @@ router
   .route("/productos/:id")
   .get((req, res) => {
     try {
-      Productos.getById(req.params.id);
+
+      Productos.getById(req.params.id).then( (data) => {
+        
+        res.send(data);
+
+      });
+    
     } catch (err) {
       console.log(err);
     }
