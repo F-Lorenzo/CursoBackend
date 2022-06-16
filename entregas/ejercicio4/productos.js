@@ -45,42 +45,33 @@ class Productos {
    * @param idNumber - product id given from route /productos/:id
    */
   static async getById(idNumber) {
-   
     idNumber = parseInt(idNumber);
 
     try {
-
       let data;
       let producto;
-      
+
       data = JSON.parse(
         await fs.promises.readFile("./listaProductos.json", "utf-8")
       );
-      
+
       this.listaProductos = data;
-      
-      // producto 
+
+      // producto
       producto = this.listaProductos.filter(
         (producto) => producto.id == idNumber
       );
-      
+
       if (producto) {
         console.log(`Requested product ${JSON.stringify(producto)}`);
-      
+
         return JSON.stringify(producto);
-
-      } 
-
-      else {
+      } else {
         console.log("No existe producto con ese id asignado");
       }
-
-    } 
-
-    catch (err) {
+    } catch (err) {
       console.log(err);
     }
-
   }
   /**
    * It reads a JSON file, parses it, and then maps the parsed data to a new array.
@@ -107,21 +98,16 @@ class Productos {
 
   static async getAll() {
     try {
-
       let data;
 
       data = JSON.parse(
         await fs.promises.readFile("./listaProductos.json", "utf-8")
       );
-      
+
       return data;
-
-    }
-
-    catch (err) {
+    } catch (err) {
       console.error(err);
     }
-
   }
 
   /**
