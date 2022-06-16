@@ -1,8 +1,8 @@
 const express = require("express");
 const { Router } = express;
+const router = Router();
 const fs = require("fs");
 const Productos = require("./Productos.js");
-const router = Router();
 
 /* -------------------------------------------------------------------------- */
 /*                                     Routes                                 */
@@ -11,7 +11,9 @@ router
   .route("/productos")
   .get((req, res) => {
     try {
-      res.send(Productos.getAll());
+      Productos.getAll().then((data) => {
+        res.send(data);
+      });
     } catch (err) {
       console.log(err);
     }
@@ -29,7 +31,9 @@ router
   .route("/productos/:id")
   .get((req, res) => {
     try {
-      Productos.getById(req.params.id);
+      Productos.getById(req.params.id).then((data) => {
+        res.send(data);
+      });
     } catch (err) {
       console.log(err);
     }
