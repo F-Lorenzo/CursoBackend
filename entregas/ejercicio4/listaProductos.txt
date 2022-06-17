@@ -40,5 +40,11 @@
     "marca": "VW",
     "precio": "678000",
     "id": 7
+  },
+  {
+    "modelo": "siena",
+    "marca": "fiat",
+    "precio": "5678900",
+    "id": 8
   }
 ]
