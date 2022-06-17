@@ -45,8 +45,10 @@ router
       fs.readFileSync("./listaProductos.json", "utf8")
     );
     try {
-      let { modelo, marca, precio, id } = req.body;
-      const producto = baseDatos.find((producto) => producto.id === id);
+      let { modelo, marca, precio } = req.body;
+      let producto = baseDatos.find(
+        (producto) => producto.id === req.params.id
+      );
       producto = {
         modelo: modelo,
         marca: marca,
