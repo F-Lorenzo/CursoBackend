@@ -41,21 +41,24 @@ router
   })
 
   .put((req, res) => {
-    const baseDatos = JSON.parse(
-      fs.readFileSync("./listaProductos.json", "utf8")
-    );
+    let id = req.params.id - 1;
     try {
-      let { modelo, marca, precio } = req.body;
-      let producto = baseDatos.find(
-        (producto) => producto.id === req.params.id
+      const baseDatos = JSON.parse(
+        fs.readFileSync("./listaProductos.json", "utf8")
       );
-      producto = {
-        modelo: modelo,
-        marca: marca,
-        precio: precio,
-      };
-      console.log(producto);
-      res.send(producto);
+      baseDatos[id]["modelo"] = req.body.modelo;
+      baseDatos[id]["marca"] = req.body.marca;
+      baseDatos[id]["precio"] = req.body.precio;
+      console.log(baseDatos[req.params.id]);
+      fs.writeFileSync(
+        "./listaProductos.json",
+        JSON.stringify(baseDatos, null, 2)
+      );
+      fs.writeFileSync(
+        "./listaProductos.txt",
+        JSON.stringify(baseDatos, null, 2)
+      );
+      res.send(baseDatos);
     } catch (err) {
       console.log(err);
     }
