@@ -12,7 +12,7 @@ class Productos {
    * file
    * @param obj - {
    */
-  async save(obj) {
+  static async save(obj) {
     let id = 0;
     try {
       const data = JSON.parse(
@@ -115,7 +115,7 @@ class Productos {
    * object with the matching id number, and then deletes that object from the array.
    * @param idNumber - number
    */
-  async deleteById(idNumber) {
+  static async deleteById(idNumber) {
     try {
       const data = JSON.parse(
         await fs.promises.readFile("./listaProductos.json", "utf-8")

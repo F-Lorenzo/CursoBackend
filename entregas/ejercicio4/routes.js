@@ -22,6 +22,7 @@ router
     try {
       const newProducto = req.body;
       Productos.save(newProducto);
+      res.json(newProducto);
     } catch (err) {
       console.log(err);
     }
@@ -52,13 +53,15 @@ router
         precio: precio,
       };
       console.log(producto);
+      res.send(producto);
     } catch (err) {
       console.log(err);
     }
   })
   .delete((req, res) => {
     try {
-      Productos.deletebyId(req.params.id);
+      Productos.deleteById(req.params.id - 1);
+      res.sendStatus(200);
     } catch (err) {
       console.log(err);
     }
