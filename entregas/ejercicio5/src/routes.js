@@ -2,7 +2,7 @@ const express = require("express");
 const { Router } = express;
 const router = Router();
 const fs = require("fs");
-const Productos = require("./Productos.js");
+const Productos = require("./productos.js");
 
 /* -------------------------------------------------------------------------- */
 /*                                     Routes                                 */
