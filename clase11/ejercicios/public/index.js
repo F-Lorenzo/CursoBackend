@@ -1,6 +1,15 @@
 const socket = io();
 
-socket.on("mensaje", (data) => {
-  alert(data);
+const input = document.querySelector("input");
+document.querySelector("button").addEventListener("click", () => {
+  socket.emit("mensaje", input.value);
 });
-socket.emit("respuesta", "esta es la respuesta del front");
+
+socket.on("mensajes", (mensajes) => {
+  const mensajesInput = mensajes
+    .map(
+      (mensaje) => `SocketId:${mensaje.socketid} -> Mensajes ${mensaje.mensaje}`
+    )
+    .join("</br>");
+  document.querySelector("p").innerHTML = mensajesInput;
+});
