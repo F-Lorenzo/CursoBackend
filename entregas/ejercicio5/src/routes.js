@@ -7,6 +7,10 @@ const Productos = require("./productos.js");
 /* -------------------------------------------------------------------------- */
 /*                                     Routes                                 */
 /* -------------------------------------------------------------------------- */
+
+router.get("/", (req, res) => {
+  res.render("index.js");
+});
 router
   .route("/productos")
   .get((req, res) => {

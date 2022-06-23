@@ -9,6 +9,7 @@ app.use("/api/", router);
 
 app.use(express.static("public"));
 app.use("/static", express.static("public"));
+app.set("view engine", "ejs");
 
 const server = app.listen(PORT, () => {
   console.log(`server funcionando en port http://localhost:${PORT}`);
