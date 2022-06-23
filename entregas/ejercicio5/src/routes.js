@@ -9,15 +9,16 @@ const Productos = require("./productos.js");
 /* -------------------------------------------------------------------------- */
 
 router.get("/", (req, res) => {
-  res.render("index.js");
+  res.render("index");
 });
 router
   .route("/productos")
   .get((req, res) => {
     try {
-      Productos.getAll().then((data) => {
+      const productos = Productos.getAll().then((data) => {
         res.send(data);
       });
+      res.render("listaProductos");
     } catch (err) {
       console.log(err);
     }
@@ -26,7 +27,7 @@ router
     try {
       const newProducto = req.body;
       Productos.save(newProducto);
-      res.json(newProducto);
+      res.redirect("/");
     } catch (err) {
       console.log(err);
     }

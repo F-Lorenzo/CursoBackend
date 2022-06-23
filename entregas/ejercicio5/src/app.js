@@ -9,6 +9,7 @@ app.use("/api/", router);
 
 app.use(express.static("public"));
 app.use("/static", express.static("public"));
+app.set("views", "./views");
 app.set("view engine", "ejs");
 
 const server = app.listen(PORT, () => {
