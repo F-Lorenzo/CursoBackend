@@ -22,7 +22,7 @@ router.get("/", (req, res) => {
 router.post("/productos", (req, res) => {
   try {
     const newProducto = Productos.Save(req.body);
-    res.redirect("/").render(newProducto);
+    res.redirect("/").render("listaProductos", { newProducto });
   } catch (err) {
     console.log(err);
   }
