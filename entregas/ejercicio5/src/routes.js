@@ -27,3 +27,5 @@ router.post("/productos", (req, res) => {
     console.log(err);
   }
 });
+
+module.exports = router;
