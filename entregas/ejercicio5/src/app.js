@@ -11,8 +11,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/api/", router);
 /* ----------------------------------- set ---------------------------------- */
-app.set("views", path.join(__dirname, "./views"));
 app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "./views"));
 
 const server = app.listen(PORT, () => {
   console.log(`server funcionando en port http://localhost:${PORT}`);
