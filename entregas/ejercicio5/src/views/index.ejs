@@ -9,7 +9,7 @@
 </head>
 <body>
     <%- include("partial/header.ejs") %>
-    <form action="">
+    <form action="/entregas/ejercicio5/src/routes.js" method="POST">
         <div class="input-group mb-3">
             <span class="input-group-text" id="inputGroup-sizing-default">Default</span>
             <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
@@ -20,8 +20,9 @@
         </div>
         <div class="input-group mb-3">
             <span class="input-group-text" id="inputGroup-sizing-default">Default</span>
-            <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+            <input type="number" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
         </div>
+        <button type="submit" class="btn btn-primary">Cargar producto</button>
     </form>
     <%- include("partial/footer.ejs") %>
 </body>
