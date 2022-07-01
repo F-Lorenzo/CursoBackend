@@ -1,7 +1,7 @@
 import fs from "fs";
-import DB from "../db/db-productos.json" assert { type: "json" };
+import dbProductos from "../db/dbProductos.json" assert { type: "json" };
 
-const baseDatos = JSON.parse(fs.readFileSync(DB, "utf-8"));
+const baseDatos = JSON.parse(fs.readFileSync(dbProductos, "utf-8"));
 
 export default class Productos {
   constructor(producto) {
@@ -16,7 +16,7 @@ export default class Productos {
   static async save(obj) {
     let id = 0;
     try {
-      const data = JSON.parse(await fs.promises.readFile(DB, "utf-8"));
+      const data = JSON.parse(await fs.promises.readFile(dbProductos, "utf-8"));
       let listaProductos = data;
       listaProductos.push(obj);
 
@@ -26,7 +26,7 @@ export default class Productos {
         }
       });
       obj.id = id + 1;
-      fs.writeFileSync(DB, JSON.stringify(listaProductos, null, 2));
+      fs.writeFileSync(dbProductos, JSON.stringify(listaProductos, null, 2));
     } catch (err) {
       console.error(err);
     }
@@ -43,7 +43,7 @@ export default class Productos {
       let data;
       let producto;
 
-      data = JSON.parse(await fs.promises.readFile(DB, "utf-8"));
+      data = JSON.parse(await fs.promises.readFile(dbProductos, "utf-8"));
 
       this.listaProductos = data;
 
@@ -68,7 +68,7 @@ export default class Productos {
    */
   async getAll() {
     try {
-      const data = JSON.parse(await fs.promises.readFile(DB, "utf-8"));
+      const data = JSON.parse(await fs.promises.readFile(dbProductos, "utf-8"));
       let productos = data;
       if (productos.length > 0) {
         const listaCompleta = productos.map((producto) => producto);
@@ -89,7 +89,7 @@ export default class Productos {
    * @param newPrecio - number
    */
   static async modify(idNumber, newModelo, newMarca, newPrecio) {
-    const data = JSON.parse(await fs.promises.readFile(DB, "utf-8"));
+    const data = JSON.parse(await fs.promises.readFile(dbProductos, "utf-8"));
     let id = parseInt(idNumber);
     try {
       const producto = baseDatos.find((producto) => producto.id === id);
@@ -97,7 +97,7 @@ export default class Productos {
         producto.modelo = newModelo;
         producto.marca = newMarca;
         producto.precio = newPrecio;
-        fs.writeFileSync(DB, JSON.stringify(data, null, 2));
+        fs.writeFileSync(dbProductos, JSON.stringify(data, null, 2));
       }
     } catch (err) {
       console.log(err);
@@ -111,14 +111,17 @@ export default class Productos {
    */
   static async deleteById(idNumber) {
     try {
-      const data = JSON.parse(await fs.promises.readFile(DB, "utf-8"));
+      const data = JSON.parse(await fs.promises.readFile(dbProductos, "utf-8"));
       this.listaProductos = data;
       let producto = this.listaProductos.filter(
         (producto) => producto.id === idNumber
       );
       if (producto) {
         this.listaProductos.splice(this.listaProductos.indexOf(producto));
-        fs.writeFileSync(DB, JSON.stringify(this.listaProductos, null, 2));
+        fs.writeFileSync(
+          dbProductos,
+          JSON.stringify(this.listaProductos, null, 2)
+        );
         console.log(`el producto con id ${idNumber} fue eliminado`);
       } else {
         console.log("No existe producto con ese id asignado");
@@ -131,12 +134,12 @@ export default class Productos {
   /* Deleting all the products in the JSON file. */
   async deleteAll() {
     try {
-      const data = JSON.parse(await fs.promises.readFile(DB, "utf-8"));
+      const data = JSON.parse(await fs.promises.readFile(dbProductos, "utf-8"));
       let productos = data;
       if (productos.length > 0) {
         const listaCompleta = productos.map((producto) => producto);
         listaCompleta.splice(0, listaCompleta.length);
-        fs.writeFileSync(DB, JSON.stringify(listaCompleta, null, 2));
+        fs.writeFileSync(dbProductos, JSON.stringify(listaCompleta, null, 2));
       } else {
         console.log("No hay productos");
       }
