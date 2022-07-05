@@ -1,5 +1,5 @@
 import fs from "fs";
-import dbProductos from "../db/dbProductos.json" assert { type: "json" };
+import dbProductos from "../db/dbProductos.js";
 
 const baseDatos = JSON.parse(fs.readFileSync(dbProductos, "utf-8"));
 

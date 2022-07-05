@@ -1,7 +1,7 @@
 import express from "express";
 import Productos from "./controllers/Productos.js";
-import { router as routeProductos } from "./routes/routeProductos.js";
-import { router as routeCarrito } from "./routes/routeCarrito.js";
+import { routerProductos } from "./routes/routeProductos.js";
+import { routerCarrito } from "./routes/routeCarrito.js";
 const router = require("./routes.js");
 
 app.use(express.json());

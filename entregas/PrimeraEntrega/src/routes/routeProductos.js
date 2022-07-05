@@ -3,9 +3,10 @@
 // PUT: '/:id' - Actualiza un producto por su id (disponible para administradores)
 // DELETE: '/:id' - Borra un producto por su id (disponible para administradores)
 
-import Productos from "../controllers/Productos";
+import Productos from "../controllers/Productos.js";
+const routerProductos = new router();
 
-router("/productos")
+routerProductos("/productos")
   .get(":id", (req, res) => {
     try {
       let id = req.params.id;
@@ -20,7 +21,9 @@ router("/productos")
   .post("/?", (req, res) => {
     try {
       let user = req.query.user;
-      const userData = JSON.parse(fs.readFileSync("../db/dbUsuarios", "utf-8"));
+      const userData = JSON.parse(
+        fs.readFileSync("../db/dbUsuarios.js", "utf-8")
+      );
       const usuario = userData.find((usuario) => usuario.name === user);
       if (usuario.authorized == true) {
         Productos.save(req.body);
@@ -35,7 +38,9 @@ router("/productos")
     try {
       let id = req.params.id;
       let user = req.query.user;
-      const userData = JSON.parse(fs.readFileSync("../db/dbUsuarios", "utf-8"));
+      const userData = JSON.parse(
+        fs.readFileSync("../db/dbUsuarios.js", "utf-8")
+      );
       const usuario = userData.find((usuario) => usuario.name === user);
       if (usuario.authorized == true) {
         const productData = JSON.parse(
@@ -54,7 +59,9 @@ router("/productos")
     try {
       let user = req.query.user;
       let id = req.params.id;
-      const userData = JSON.parse(fs.readFileSync("../db/dbUsuarios", "utf-8"));
+      const userData = JSON.parse(
+        fs.readFileSync("../db/dbUsuarios.js", "utf-8")
+      );
       const usuario = userData.find((usuario) => usuario.name === user);
       if (usuario.authorized == true) {
         res.send(Productos.getById(id));
@@ -64,4 +71,4 @@ router("/productos")
     }
   });
 
-export default { router };
+export default { routerProductos };
