@@ -1,5 +1,4 @@
 import express from "express";
-import Productos from "./controllers/Productos.js";
 import { routerProductos } from "./routes/routeProductos.js";
 import { routerCarrito } from "./routes/routeCarrito.js";
 const router = require("./routes.js");
@@ -12,10 +11,15 @@ app.use("/api/", router);
 const PORT = process.env.PORT || 8080;
 const app = express();
 
-app.get("/", (req, res) => {
-  Productos.getAll().then((p) => {
-    res.send(p);
-  });
+app.use(function (req, res, next) {
+  let user = req.query.user;
+  const userData = JSON.parse(fs.readFileSync("../db/dbUsuarios.js", "utf-8"));
+  const usuario = userData.find((usuario) => usuario.name === user);
+  if (usuario.authorized == true) {
+    next();
+  } else {
+    res.redirect("/api");
+  }
 });
 
 const server = app.listen(PORT, () => {
