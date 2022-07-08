@@ -1,17 +1,19 @@
 import express from "express";
+import { Router } from "express";
 import { routerProductos } from "./routes/routeProductos.js";
 import { routerCarrito } from "./routes/routeCarrito.js";
 import { auth } from "./middlewares/auth.js";
-const router = require("./routes.js");
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use("/static", express.static(__dirname + "/public"));
-app.use("/api/", router);
-
+const router = new Router();
 const PORT = process.env.PORT || 8080;
 const app = express();
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use("/api/", router);
+
+/* ---------------------------------- rutas --------------------------------- */
 app.use(auth, routerProductos);
 app.use(auth, routerCarrito);
 

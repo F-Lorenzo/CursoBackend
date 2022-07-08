@@ -1,4 +1,5 @@
 import { users } from "../db/dbUsuarios.js";
+import fs from "fs";
 
 export function auth(req, res, next) {
   let user = req.query.user;
