@@ -1,8 +1,3 @@
-// GET: '/:id?' - Me permite listar todos los productos disponibles ó un producto por su id (disponible para usuarios y administradores)
-// POST: '/' - Para incorporar productos al listado (disponible para administradores)
-// PUT: '/:id' - Actualiza un producto por su id (disponible para administradores)
-// DELETE: '/:id' - Borra un producto por su id (disponible para administradores)
-
 import Productos from "../controllers/Productos.js";
 const routerProductos = new router();
 

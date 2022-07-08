@@ -1,6 +1,7 @@
 import express from "express";
-import { routerProductos } from "./routes/routeProductos.js";
-import { routerCarrito } from "./routes/routeCarrito.js";
+import routerProductos from "./routes/routeProductos.js";
+import routerCarrito from "./routes/routeCarrito.js";
+import auth from "./middlewares/auth.js";
 const router = require("./routes.js");
 
 app.use(express.json());
@@ -10,17 +11,6 @@ app.use("/api/", router);
 
 const PORT = process.env.PORT || 8080;
 const app = express();
-
-app.use(function (req, res, next) {
-  let user = req.query.user;
-  const userData = JSON.parse(fs.readFileSync("../db/dbUsuarios.js", "utf-8"));
-  const usuario = userData.find((usuario) => usuario.name === user);
-  if (usuario.authorized == true) {
-    next();
-  } else {
-    res.redirect("/api");
-  }
-});
 
 const server = app.listen(PORT, () => {
   console.log(`server funcionando en port http://localhost:${PORT}`);
