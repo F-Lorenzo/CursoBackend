@@ -47,4 +47,4 @@ routerCarrito("/carrito")
     }
   });
 
-export default { routerCarrito };
+export { routerCarrito };

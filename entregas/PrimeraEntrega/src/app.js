@@ -1,7 +1,7 @@
 import express from "express";
-import routerProductos from "./routes/routeProductos.js";
-import routerCarrito from "./routes/routeCarrito.js";
-import auth from "./middlewares/auth.js";
+import { routerProductos } from "./routes/routeProductos.js";
+import { routerCarrito } from "./routes/routeCarrito.js";
+import { auth } from "./middlewares/auth.js";
 const router = require("./routes.js");
 
 app.use(express.json());

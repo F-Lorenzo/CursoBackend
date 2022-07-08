@@ -1,6 +1,6 @@
-import users from "../db/dbUsuarios.js";
+import { users } from "../db/dbUsuarios.js";
 
-export default function (req, res, next) {
+export function auth(req, res, next) {
   let user = req.query.user;
   const userData = JSON.parse(fs.readFileSync(users, "utf-8"));
   const usuario = userData.find((usuario) => usuario.name === user);

@@ -66,4 +66,4 @@ routerProductos("/productos")
     }
   });
 
-export default { routerProductos };
+export { routerProductos };

@@ -1,13 +1,15 @@
-[
-    {
-        "name": "Facundo",
-        "userID": 1,
-        "authrized": true,
-    },
-    
-    {
-        "name": "Juan",
-        "userID": 2,
-        "authrized": false,
-    }
-]
+const users = [
+  {
+    name: "Facundo",
+    userID: 1,
+    authrized: true,
+  },
+
+  {
+    name: "Juan",
+    userID: 2,
+    authrized: false,
+  },
+];
+
+export { users };
