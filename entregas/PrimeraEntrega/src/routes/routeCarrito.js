@@ -1,5 +1,6 @@
 import Carrito from "../controllers/carrito.js";
-const routerCarrito = new router();
+import { Router } from "express";
+const routerCarrito = new Router();
 
 routerCarrito("/carrito")
   .get("/:id/productos", (req, res) => {

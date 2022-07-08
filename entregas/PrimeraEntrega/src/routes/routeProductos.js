@@ -1,5 +1,6 @@
 import Productos from "../controllers/Productos.js";
-const routerProductos = new router();
+import { Router } from "express";
+const routerProductos = new Router();
 
 routerProductos("/productos")
   .get(":id", (req, res) => {

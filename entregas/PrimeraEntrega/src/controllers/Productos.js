@@ -1,7 +1,9 @@
 import fs from "fs";
 import dbProductos from "../db/dbProductos.js";
 
-const baseDatos = JSON.parse(fs.readFileSync(dbProductos, "utf-8"));
+async function baseDatos() {
+  await JSON.parse(fs.promises.readFile("../db/dbProductos.js", "utf-8"));
+}
 
 export default class Productos {
   constructor(producto) {
