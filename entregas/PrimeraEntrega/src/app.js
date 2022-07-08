@@ -12,6 +12,9 @@ app.use("/api/", router);
 const PORT = process.env.PORT || 8080;
 const app = express();
 
+app.use(auth, routerProductos);
+app.use(auth, routerCarrito);
+
 const server = app.listen(PORT, () => {
   console.log(`server funcionando en port http://localhost:${PORT}`);
 });
