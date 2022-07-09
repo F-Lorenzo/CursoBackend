@@ -5,7 +5,7 @@ export function auth(req, res, next) {
   async function userData() {
     await JSON.parse(fs.promises.readFile("../db/dbUsuarios.js", "utf-8"));
   }
-  const usuario = userData.find((usuario) => usuario.name === user);
+  const usuario = userData().find((usuario) => usuario.name === user);
   if (usuario.authorized == true) {
     next();
   } else {

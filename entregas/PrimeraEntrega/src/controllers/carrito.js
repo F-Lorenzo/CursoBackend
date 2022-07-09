@@ -21,7 +21,7 @@ export default class Carrito {
         }
       });
       obj.id = id++;
-      fs.writeFileSync(dbcarrito, JSON.stringify(carritos, null, 2));
+      fs.writeFileSync("../db/dbCarrito.js", JSON.stringify(carritos, null, 2));
     } catch (error) {
       console.log(error);
     }
@@ -40,7 +40,10 @@ export default class Carrito {
       );
       const producto = productos.find((producto) => producto.id === productoId);
       this.productos.push(producto);
-      fs.writeFileSync(dbcarrito, JSON.stringify(this.productos, null, 2));
+      fs.writeFileSync(
+        "../db/dbCarrito.js",
+        JSON.stringify(this.productos, null, 2)
+      );
     } catch (error) {
       console.log(error);
     }
@@ -76,7 +79,10 @@ export default class Carrito {
       );
       const producto = productos.find((producto) => producto.id === productoId);
       this.productos.slice(producto, 1);
-      fs.writeFileSync(dbcarrito, JSON.stringify(this.productos, null, 2));
+      fs.writeFileSync(
+        "../db/dbCarrito.js",
+        JSON.stringify(this.productos, null, 2)
+      );
     } catch (error) {
       console.log(error);
     }
@@ -89,7 +95,7 @@ export default class Carrito {
       let carritos = data;
       const carrito = carritos.find((carrito) => carrito.id === carritoId);
       carritos.slice(carrito, 1);
-      fs.writeFileSync(dbcarrito, JSON.stringify(carritos, null, 2));
+      fs.writeFileSync("../db/dbCarrito.js", JSON.stringify(carritos, null, 2));
     } catch (error) {
       console.log(error);
     }
