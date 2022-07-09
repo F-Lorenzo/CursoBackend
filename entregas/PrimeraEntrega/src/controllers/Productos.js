@@ -74,7 +74,7 @@ export default class Productos {
   /**
    * It reads a JSON file, parses it, and then maps the parsed data to a new array.
    */
-  async getAll() {
+  static async getAll() {
     try {
       const data = JSON.parse(
         await fs.promises.readFile("../db/dbProductos.js", "utf-8")

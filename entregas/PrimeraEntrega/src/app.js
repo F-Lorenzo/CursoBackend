@@ -14,8 +14,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/", router);
 
 /* ---------------------------------- rutas --------------------------------- */
-app.use(auth, routerProductos);
-app.use(auth, routerCarrito);
+app.use(routerProductos);
+app.use(routerCarrito);
 
 const server = app.listen(PORT, () => {
   console.log(`server funcionando en port http://localhost:${PORT}`);

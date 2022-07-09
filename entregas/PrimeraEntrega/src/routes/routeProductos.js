@@ -4,11 +4,13 @@ const routerProductos = new Router();
 
 routerProductos.get("/productos/:id", (req, res) => {
   try {
-    let id = req.params.id;
+    let { id } = req.params;
     if (id) {
       res.send(Productos.getById(id));
     }
-    res.send(Productos.getAll());
+    Productos.getAll().then((p) => {
+      res.send(p);
+    });
   } catch (error) {
     console.log(error);
   }
