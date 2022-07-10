@@ -7,11 +7,12 @@ routerProductos.get("/productos/:id", (req, res) => {
     let { id } = req.params;
     if (id) {
       res.send(Productos.getById(id));
+    } else {
+      const producto = Productos.getAll().then((p) => {
+        p;
+      });
+      console.log(res.send(producto));
     }
-    const producto = Productos.getAll().then((p) => {
-      p;
-    });
-    console.log(res.send(producto));
   } catch (error) {
     console.log(error);
   }
