@@ -1,7 +1,7 @@
 import fs from "fs";
 
 async function baseDatos() {
-  await JSON.parse(fs.promises.readFile("../db/dbProductos.js", "utf-8"));
+  await JSON.parse(fs.promises.readFile("../db/dbProductos.json", "utf-8"));
 }
 
 export default class Productos {
@@ -18,7 +18,7 @@ export default class Productos {
     let id = 0;
     try {
       const data = JSON.parse(
-        await fs.promises.readFile("../db/dbProductos.js", "utf-8")
+        await fs.promises.readFile("../db/dbProductos.json", "utf-8")
       );
       let listaProductos = data;
       listaProductos.push(obj);
@@ -30,7 +30,7 @@ export default class Productos {
       });
       obj.id = id + 1;
       fs.writeFileSync(
-        "../db/dbProductos.js",
+        "../db/dbProductos.json",
         JSON.stringify(listaProductos, null, 2)
       );
     } catch (err) {
@@ -50,7 +50,7 @@ export default class Productos {
       let producto;
 
       data = JSON.parse(
-        await fs.promises.readFile("../db/dbProductos.js", "utf-8")
+        await fs.promises.readFile("../db/dbProductos.json", "utf-8")
       );
 
       this.listaProductos = data;
@@ -77,7 +77,7 @@ export default class Productos {
   static async getAll() {
     try {
       const data = JSON.parse(
-        await fs.promises.readFile("../db/dbProductos.js", "utf-8")
+        await fs.promises.readFile("../db/dbProductos.json", "utf-8")
       );
       let productos = data;
       if (productos.length > 0) {
@@ -100,7 +100,7 @@ export default class Productos {
    */
   static async modify(idNumber, newModelo, newMarca, newPrecio) {
     const data = JSON.parse(
-      await fs.promises.readFile("../db/dbProductos.js", "utf-8")
+      await fs.promises.readFile("../db/dbProductos.json", "utf-8")
     );
     let id = parseInt(idNumber);
     try {
@@ -109,7 +109,10 @@ export default class Productos {
         producto.modelo = newModelo;
         producto.marca = newMarca;
         producto.precio = newPrecio;
-        fs.writeFileSync("../db/dbProductos.js", JSON.stringify(data, null, 2));
+        fs.writeFileSync(
+          "../db/dbProductos.json",
+          JSON.stringify(data, null, 2)
+        );
       }
     } catch (err) {
       console.log(err);
@@ -124,7 +127,7 @@ export default class Productos {
   static async deleteById(idNumber) {
     try {
       const data = JSON.parse(
-        await fs.promises.readFile("../db/dbProductos.js", "utf-8")
+        await fs.promises.readFile("../db/dbProductos.json", "utf-8")
       );
       this.listaProductos = data;
       let producto = this.listaProductos.filter(
@@ -133,7 +136,7 @@ export default class Productos {
       if (producto) {
         this.listaProductos.splice(this.listaProductos.indexOf(producto));
         fs.writeFileSync(
-          "../db/dbProductos.js",
+          "../db/dbProductos.json",
           JSON.stringify(this.listaProductos, null, 2)
         );
         console.log(`el producto con id ${idNumber} fue eliminado`);
@@ -149,14 +152,14 @@ export default class Productos {
   async deleteAll() {
     try {
       const data = JSON.parse(
-        await fs.promises.readFile("../db/dbProductos.js", "utf-8")
+        await fs.promises.readFile("../db/dbProductos.json", "utf-8")
       );
       let productos = data;
       if (productos.length > 0) {
         const listaCompleta = productos.map((producto) => producto);
         listaCompleta.splice(0, listaCompleta.length);
         fs.writeFileSync(
-          "../db/dbProductos.js",
+          "../db/dbProductos.json",
           JSON.stringify(listaCompleta, null, 2)
         );
       } else {

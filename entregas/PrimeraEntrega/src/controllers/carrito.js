@@ -10,7 +10,7 @@ export default class Carrito {
     let id = 0;
     try {
       const data = JSON.parse(
-        await fs.promises.readFile("../db/dbCarrito.js", "utf-8")
+        await fs.promises.readFile("../db/dbCarrito.json", "utf-8")
       );
       let carritos = data;
       carritos.push(obj);
@@ -21,7 +21,10 @@ export default class Carrito {
         }
       });
       obj.id = id++;
-      fs.writeFileSync("../db/dbCarrito.js", JSON.stringify(carritos, null, 2));
+      fs.writeFileSync(
+        "../db/dbCarrito.json",
+        JSON.stringify(carritos, null, 2)
+      );
     } catch (error) {
       console.log(error);
     }
@@ -30,18 +33,18 @@ export default class Carrito {
     try {
       //busco el carrito
       const data = JSON.parse(
-        await fs.promises.readFile("../db/dbCarrito.js", "utf-8")
+        await fs.promises.readFile("../db/dbCarrito.json", "utf-8")
       );
       let carritos = data;
       const carrito = carritos.find((carrito) => carrito.id === carritoId);
       //busco el producto
       const productos = JSON.parse(
-        await fs.promises.readFile("../db/dbProductos.js", "utf-8")
+        await fs.promises.readFile("../db/dbProductos.json", "utf-8")
       );
       const producto = productos.find((producto) => producto.id === productoId);
       this.productos.push(producto);
       fs.writeFileSync(
-        "../db/dbCarrito.js",
+        "../db/dbCarrito.json",
         JSON.stringify(this.productos, null, 2)
       );
     } catch (error) {
@@ -51,7 +54,7 @@ export default class Carrito {
   static async getProductos(carritoId) {
     try {
       const data = JSON.parse(
-        await fs.promises.readFile("../db/dbCarrito.js", "utf-8")
+        await fs.promises.readFile("../db/dbCarrito.json", "utf-8")
       );
       let carritos = data;
       const carrito = carritos.find((carrito) => carrito.id === carritoId);
@@ -69,18 +72,18 @@ export default class Carrito {
     try {
       //busco el carrito
       const data = JSON.parse(
-        await fs.promises.readFile("../db/dbCarrito.js", "utf-8")
+        await fs.promises.readFile("../db/dbCarrito.json", "utf-8")
       );
       let carritos = data;
       const carrito = carritos.find((carrito) => carrito.id === carritoId);
       //busco el producto
       const productos = JSON.parse(
-        await fs.promises.readFile("../db/dbProductos.js", "utf-8")
+        await fs.promises.readFile("../db/dbProductos.json", "utf-8")
       );
       const producto = productos.find((producto) => producto.id === productoId);
       this.productos.slice(producto, 1);
       fs.writeFileSync(
-        "../db/dbCarrito.js",
+        "../db/dbCarrito.json",
         JSON.stringify(this.productos, null, 2)
       );
     } catch (error) {
@@ -90,12 +93,15 @@ export default class Carrito {
   static async deleteAll(carritoId) {
     try {
       const data = JSON.parse(
-        await fs.promises.readFile("../db/dbCarrito.js", "utf-8")
+        await fs.promises.readFile("../db/dbCarrito.json", "utf-8")
       );
       let carritos = data;
       const carrito = carritos.find((carrito) => carrito.id === carritoId);
       carritos.slice(carrito, 1);
-      fs.writeFileSync("../db/dbCarrito.js", JSON.stringify(carritos, null, 2));
+      fs.writeFileSync(
+        "../db/dbCarrito.json",
+        JSON.stringify(carritos, null, 2)
+      );
     } catch (error) {
       console.log(error);
     }

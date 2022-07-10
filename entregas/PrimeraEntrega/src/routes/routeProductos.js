@@ -8,9 +8,10 @@ routerProductos.get("/productos/:id", (req, res) => {
     if (id) {
       res.send(Productos.getById(id));
     }
-    Productos.getAll().then((p) => {
-      res.send(p);
+    const producto = Productos.getAll().then((p) => {
+      p;
     });
+    console.log(res.send(producto));
   } catch (error) {
     console.log(error);
   }

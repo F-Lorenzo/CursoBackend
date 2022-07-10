@@ -9,6 +9,6 @@ export function auth(req, res, next) {
   if (usuario.authorized == true) {
     next();
   } else {
-    res.redirect("/api");
+    res.send("/api");
   }
 }
