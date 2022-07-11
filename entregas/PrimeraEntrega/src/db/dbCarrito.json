@@ -1,2 +1,12 @@
 [
-];
+    {
+        "user":"Facundo",
+        "id":1,
+        "productos":[ {
+            "modelo": "Ka",
+            "marca": "Ford",
+            "precio": "100000",
+           " id": 1
+          }]
+    }
+]
