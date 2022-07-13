@@ -6,7 +6,7 @@ const router = new Router();
 router.get("/", async (req, res) => {
   try {
     const all = await Productos.getAll();
-    res.render("index", { all });
+    res.render("index", { all }, { async: true });
   } catch (err) {
     console.log(err);
   }
