@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include("../partial/head.ejs")%>
+    <title>Document</title>
+</head>
+<body>
+    <ul>
+        <% all.forEach((p) { %>
+            <li>
+                <strong><%= p.model %></strong>
+                <strong><%= p.marca %></strong>
+                <strong><%= p.precio %></strong>
+            </li>
+        <% }); %>
+    </ul>
+
+    <footer>
+        <%- include("../partial/footer.ejs");%>
+    </footer>
+</body>
+</html>
