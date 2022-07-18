@@ -1,0 +1,141 @@
+use ecommerce 
+
+db.productos.insertMany([
+  {
+    "modelo": "Ka",
+    "marca": "Ford",
+    "precio": "100",
+    "id": 1
+  },
+  {
+    "modelo": "cruze",
+    "marca": "chevrolete",
+    "precio": "1500",
+    "id": 2
+  },
+  {
+    "modelo": "palio",
+    "marca": "Fiat",
+    "precio": "5000",
+    "id": 3
+  },
+  {
+    "modelo": "clio",
+    "marca": "renault",
+    "precio": "3260",
+    "id": 4
+  },
+  {
+    "modelo": "jurney",
+    "marca": "dodge",
+    "precio": "3098",
+    "id": 5
+  },
+  {
+    "modelo": "3008",
+    "marca": "peugeot",
+    "precio": "4000",
+    "id": 6
+  },
+  {
+    "modelo": "sirocco",
+    "marca": "VW",
+    "precio": "4780",
+    "id": 7
+  },
+  {
+    "modelo": "siena",
+    "marca": "fiat",
+    "precio": "567",
+    "id": 8
+  },
+    {
+    "modelo": "swift",
+    "marca": "nissan",
+    "precio": "1678",
+    "id": 9
+  },
+    {
+    "modelo": "corsa",
+    "marca": "chevrolete",
+    "precio": "2934",
+    "id": 10
+  }
+])
+
+db.mensajes.insertMany([
+    {
+    "usuario":"Facundo",
+    "id":1,
+    "mensaje":"Hola!"
+    },
+{
+    "usuario":"Juan",
+    "id":1,
+    "mensaje":"Hola,Como estas?"
+    },
+    {
+    "usuario":"Facundo",
+    "id":2,
+    "mensaje":"Bien, vos?"
+    },
+    {
+    "usuario":"Juan",
+    "id":1,
+    "mensaje":"Bien tambien!"
+    },
+    {
+    "usuario":"Facundo",
+    "id":2,
+    "mensaje":"Genail, Vamos a jugar al futbol el sabado?"
+    },
+    {
+    "usuario":"Juan",
+    "id":1,
+    "mensaje":"El Sabado no puedo , que tal el domingo?"
+    },
+    {
+    "usuario":"Facundo",
+    "id":2,
+    "mensaje":"Perfecto! entonces nos vemos el Domingo"
+    },
+    {
+    "usuario":"Juan",
+    "id":1,
+    "mensaje":"Le aviso a los chicos entonces"
+    },
+    {
+    "usuario":"Facundo",
+    "id":1,
+    "mensaje":"Avisale! chau , vamos hablando"
+    },
+    {
+    "usuario":"Juan",
+    "id":2,
+    "mensaje":"Ok , vamos hablando, Adios!"
+    },
+
+])
+
+db.productos.find().preety()
+db.mensajes.find().preety()
+
+db.productos.estimatedDocumentCount()
+db.mensajes.estimatedDocumentCount()
+
+db.productos.insertOne([{"modelo":"19","marca":"renault","precio":250,"id":11}])
+
+db.productos.find({$lt:{"precio":1000}})
+db.productos.find({$and:[$gte:{"precio":1000},$lte:{"precio":3000}]})
+db.productos.find({$gt:{"precio":3000}})
+db.productos.find().sort({"precio":1}).skip(2).limit(1)
+
+
+db.productos.update({},{$set:{"stock":100}},{upsert:true})
+db.productos.update({$gte:{"precio":4000}},{$set:{"stock":0}})
+
+db.productos.deleteMany({$lt:{"precio":1000}})
+
+use admin
+
+db.createUser("user":"pepe","pwd":"asd456",roles:[{role:read,db:ecommerce}])
