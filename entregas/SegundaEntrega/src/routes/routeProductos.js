@@ -1,5 +1,6 @@
 import Productos from "../controllers/Productos.js";
 import { Router } from "express";
+import auth from "../middlewares/auth.js";
 const routerProductos = new Router();
 
 routerProductos.get("/productos/:id", (req, res) => {
@@ -17,14 +18,14 @@ routerProductos.get("/productos/:id", (req, res) => {
     console.log(error);
   }
 });
-routerProductos.post("/productos", (req, res) => {
+routerProductos.post("/productos", auth, (req, res) => {
   try {
     Productos.save(req.body);
   } catch (error) {
     console.log(error);
   }
 });
-routerProductos.put("/productos/:id", (req, res) => {
+routerProductos.put("/productos/:id", auth, (req, res) => {
   try {
     let id = req.params.id;
     const productData = JSON.parse(
@@ -36,7 +37,7 @@ routerProductos.put("/productos/:id", (req, res) => {
     console.log(error);
   }
 });
-routerProductos.delete("/productos/:id", (req, res) => {
+routerProductos.delete("/productos/:id", auth, (req, res) => {
   try {
     let id = req.params.id;
     res.send(Productos.getById(id));
