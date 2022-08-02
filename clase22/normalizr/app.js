@@ -1,4 +1,8 @@
-import { schema, normalize, denormalize } from "normalizr";
+import {
+  schema,
+  normalize,
+  denormalize,
+} from "./normalizr/node_modules/normalizr";
 import { inspect } from "util";
 
 const blogpost = {
