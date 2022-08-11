@@ -1,16 +1,10 @@
-/*============================[Modulos]============================*/
-const dotenv = require("dotenv").config();
 const express = require("express");
 const session = require("express-session");
-const cookieParser = require("cookie-parser");
-const bodyParser = require("body-parser");
 const exphbs = require("express-handlebars");
-const path = require("path");
-const app = express();
-
 const { Server: HttpServer } = require("http");
 const { Server: IOServer } = require("socket.io");
 
+const app = express();
 const httpServer = new HttpServer(app);
 const io = new IOServer(httpServer);
 
@@ -19,54 +13,28 @@ const knexMDB = require("knex")(optionsMDB);
 const optionsSQL3 = require("./options/SQLite3");
 const knexSQL3 = require("knex")(optionsSQL3);
 
-const mongoStore = require("connect-mongo");
-const advancedoptions = { useNewUrlParser: true, useUnifiedTopology: true };
-
 const data = require("./api/dataBase.js");
 const mdb = new data(knexMDB, "products");
 const sql3 = new data(knexSQL3, "messages");
 
-/*============================[Middlewares]============================*/
-
-/*----------- Session -----------*/
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static("./public"));
 app.use(
   session({
-    store: mongoStore.create({
-      mongoUrl: MONGO_DB,
-      mongoOptions: advancedoptions,
-    }),
-
-    secret: "pepe",
+    secret: "cursoBackend",
     resave: false,
     saveUninitialized: false,
-    cookie: {
-      maxAge: 10000,
-    },
   })
 );
 
-/*----------- Motor de plantillas -----------*/
-app.set("views", path.join(path.dirname(""), "./src/views"));
-app.engine(
-  ".hbs",
-  exphbs.engine({
-    defaultLayout: "main",
-    layoutsDir: path.join(app.get("views"), "layouts"),
-    extname: ".hbs",
-  })
-);
-app.set("view engine", ".hbs");
+/* -------------------------------------------------------------------------- */
+/*                                    RUTAS                                   */
+/* -------------------------------------------------------------------------- */
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.json());
-
-/*============================[Base de Datos]============================*/
-const usuariosDB = [];
-
-/*============================[Rutas]============================*/
 app.get("/", (req, res) => {
-  if (req.session.nombre) {
-    res.redirect("/datos");
+  if (req.session == true) {
+    res.sendFile("index.html", { root: __dirname });
   } else {
     res.redirect("/login");
   }
@@ -147,11 +115,9 @@ io.on("connection", async (socket) => {
   });
 });
 
-/*============================[Servidor]============================*/
 const PORT = 8080 || process.env.PORT;
-const server = app.listen(PORT, () => {
-  console.log(`Servidor escuchando en puerto ${PORT}`);
+
+const server = httpServer.listen(PORT, () => {
+  console.log(`Servidor escuchando en el puerto ${server.address().port}`);
 });
-server.on("error", (error) => {
-  console.error(`Error en el servidor ${error}`);
-});
+server.on("error", (error) => console.log(`Error en servidor ${error}`));

@@ -1,3 +1,5 @@
+const { faker } = require("@faker-js/faker");
+// let str = "NOMBRE;APELLIDO;COLOR;";
 const express = require("express");
 const { Server: HttpServer } = require("http");
 const { Server: IOServer } = require("socket.io");
@@ -22,6 +24,19 @@ app.use(express.static("./public"));
 app.get("/", (req, res) => {
   res.sendFile("index.html", { root: __dirname });
 });
+// app.get("api/products-test", (req, res) => {
+//   const datos = [];
+//   for (let i = 0; i < 5; i++) {
+//     const dato = {
+//       id: id++,
+//       nombre: faker.name.firstName(),
+//       apellido: faker.name.lastName(),
+//       color: faker.color.human(),
+//     };
+//     datos.push(dato);
+//   }
+//   res.status(200).json({ datos });
+// });
 
 io.on("connection", async (socket) => {
   console.log("Usuario conectado !!!!!!!!!");
