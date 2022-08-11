@@ -1,6 +1,7 @@
 /*============================[Modulos]============================*/
 const express = require("express");
 const session = require("express-session");
+const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const exphbs = require("express-handlebars");
 const path = require("path");
@@ -17,6 +18,9 @@ const knexMDB = require("knex")(optionsMDB);
 const optionsSQL3 = require("./options/SQLite3");
 const knexSQL3 = require("knex")(optionsSQL3);
 
+const mongoStore = require("connect-mongo");
+const advancedoptions = { useNewUrlParser: true, useUnifiedTopology: true };
+
 const data = require("./api/dataBase.js");
 const mdb = new data(knexMDB, "products");
 const sql3 = new data(knexSQL3, "messages");
@@ -26,9 +30,18 @@ const sql3 = new data(knexSQL3, "messages");
 /*----------- Session -----------*/
 app.use(
   session({
+    store: mongoStore.create({
+      mongoUrl:
+        "mongodb://FacundoLorenzo:fnaickui@cluster0-shard-00-00.rr5qg.mongodb.net:27017,cluster0-shard-00-01.rr5qg.mongodb.net:27017,cluster0-shard-00-02.rr5qg.mongodb.net:27017/?ssl=true&replicaSet=atlas-nkuxqr-shard-0&authSource=admin&retryWrites=true&w=majority",
+      mongoOptions: advancedoptions,
+    }),
+
     secret: "pepe",
     resave: false,
     saveUninitialized: false,
+    cookie: {
+      maxAge: 10000,
+    },
   })
 );
 
@@ -91,18 +104,18 @@ app.post("/register", (req, res) => {
   }
 });
 
-// app.get("/datos", (req, res) => {
-//   if (req.session.nombre) {
-//     const datosUsuario = usuariosDB.find(
-//       (usuario) => usuario.nombre == req.session.nombre
-//     );
-//     res.render("datos", {
-//       datos: datosUsuario,
-//     });
-//   } else {
-//     res.redirect("/login");
-//   }
-// });
+app.get("/datos", (req, res) => {
+  if (req.session.nombre) {
+    const datosUsuario = usuariosDB.find(
+      (usuario) => usuario.nombre == req.session.nombre
+    );
+    res.render("datos", {
+      datos: datosUsuario,
+    });
+  } else {
+    res.redirect("/login");
+  }
+});
 
 app.get("/logout", (req, res) => {
   req.session.destroy((err) => {
