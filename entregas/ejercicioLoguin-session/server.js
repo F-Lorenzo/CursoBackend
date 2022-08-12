@@ -32,7 +32,7 @@ const sql3 = new data(knexSQL3, "messages");
 app.use(
   session({
     store: mongoStore.create({
-      mongoUrl: MONGO_DB,
+      mongoUrl: process.env.MONGO_DB,
       mongoOptions: advancedoptions,
     }),
 
