@@ -5,6 +5,14 @@ const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const exphbs = require("express-handlebars");
+
+const passport = require("passport");
+const { Strategy } = require("passport-local");
+const LocalStrategy = Strategy;
+const bcrypt = require("bcrypt");
+
+const User = require("./src/models/User.js");
+
 const path = require("path");
 const app = express();
 
@@ -25,6 +33,7 @@ const advancedoptions = { useNewUrlParser: true, useUnifiedTopology: true };
 const data = require("./api/dataBase.js");
 const mdb = new data(knexMDB, "products");
 const sql3 = new data(knexSQL3, "messages");
+const mongoose = require("mongoose");
 
 /*============================[Middlewares]============================*/
 
@@ -61,11 +70,50 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
 /*============================[Base de Datos]============================*/
-const usuariosDB = [];
+mongoose
+  .connect("mongodb://localhost:27017/passport-local")
+  .then(() => console.log("DB is connected"))
+  .catch((err) => console.log(err));
+
+/*==========================[Passport]===========================*/
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(
+  new LocalStrategy((username, password, done) => {
+    User.findOne({ username }, (err, user) => {
+      if (err) console.log(err);
+      if (!user) return done(null, false);
+      bcrypt.compare(password, user.password, (err, isMatch) => {
+        if (err) console.log(err);
+        if (isMatch) return done(null, user);
+        return done(null, false);
+      });
+    });
+  })
+);
+
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+passport.deserializeUser(async (id, done) => {
+  const user = await User.findById(id);
+  done(null, user);
+});
 
 /*============================[Rutas]============================*/
+function auth(req, res, next) {
+  if (req.isAuthenticated()) {
+    next();
+  } else {
+    res.render("login-error");
+  }
+}
+
 app.get("/", (req, res) => {
-  if (req.session.nombre) {
+  if (req.user) {
     res.redirect("/datos");
   } else {
     res.redirect("/login");
@@ -76,39 +124,43 @@ app.get("/login", (req, res) => {
   res.render("login");
 });
 
-app.post("/login", (req, res) => {
-  const { nombre, password } = req.body;
-  const usuario = usuariosDB.find(
-    (usuario) => usuario.nombre == nombre && usuario.password == password
-  );
-  if (!usuario) {
-    res.render("login-error");
-  } else {
-    req.session.nombre = nombre;
+app.get("/login-error", (req, res) => {
+  res.render("login-error");
+});
+
+app.post(
+  "/login",
+  passport.authenticate("local", { failureRedirect: "login-error" }),
+  (req, res) => {
     res.redirect("/datos");
   }
-});
+);
 
 app.get("/register", (req, res) => {
   res.render("register");
 });
 
 app.post("/register", (req, res) => {
-  const { nombre, password, direccion } = req.body;
-  const usuario = usuariosDB.find((usuario) => usuario.nombre == nombre);
-  if (usuario) {
-    res.render("register-error");
-  } else {
-    usuariosDB.push({ nombre, password, direccion });
-    res.redirect("/login");
-  }
+  const { username, password, direccion } = req.body;
+  User.findOne({ username }, async (err, user) => {
+    if (err) console.log(err);
+    if (user) res.render("register-error");
+    if (!user) {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const newUser = new User({
+        username,
+        password: hashedPassword,
+        direccion,
+      });
+      await newUser.save();
+      res.redirect("/login");
+    }
+  });
 });
 
-app.get("/datos", (req, res) => {
-  if (req.session.nombre) {
-    const datosUsuario = usuariosDB.find(
-      (usuario) => usuario.nombre == req.session.nombre
-    );
+app.get("/datos", async (req, res) => {
+  if (req.user) {
+    const datosUsuario = await User.findById(req.user._id).lean();
     res.render("datos", {
       datos: datosUsuario,
     });
@@ -117,12 +169,14 @@ app.get("/datos", (req, res) => {
   }
 });
 
-app.get("/logout", (req, res) => {
-  req.session.destroy((err) => {
-    res.redirect("/login");
+app.get("/logout", (req, res, next) => {
+  req.logout(function (err) {
+    if (err) {
+      return next(err);
+    }
+    res.redirect("/");
   });
 });
-
 /* -------------------------------------------------------------------------- */
 /*                               conexion socket                              */
 /* -------------------------------------------------------------------------- */
