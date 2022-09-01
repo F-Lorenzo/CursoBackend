@@ -11,6 +11,10 @@ const { Strategy } = require("passport-local");
 const LocalStrategy = Strategy;
 const bcrypt = require("bcrypt");
 
+const parse = require("yargs/yargs");
+const process = require("process");
+const { fork } = require("child_process");
+
 const User = require("./src/models/User.js");
 
 const path = require("path");
@@ -45,7 +49,7 @@ app.use(
       mongoOptions: advancedoptions,
     }),
 
-    secret: "pepe",
+    secret: process.env.MONGO_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: {
@@ -103,7 +107,38 @@ passport.deserializeUser(async (id, done) => {
   done(null, user);
 });
 
+/* -------------------------------------------------------------------------- */
+/*                                    yargs                                   */
+/* -------------------------------------------------------------------------- */
+
+const yargs = parse(process.argv.slice(2));
+
+const { port, _ } = yargs
+  .boolean("debug")
+  .alias({
+    // m: 'modo',
+    p: "port",
+    // d: 'debug'
+  })
+  .default({
+    // modo: 'prod',
+    port: 8080,
+    // debug: false
+  }).argv;
+
+const server_info = {
+  arguments: process.argv.slice(2),
+  os: process.env.os,
+  node_version: process.versions.node,
+  memory_usage: process.memoryUsage().rss,
+  exec_path: process.execPath,
+  process_id: process.pid,
+  current_working_directory: process.cwd(),
+};
+
 /*============================[Rutas]============================*/
+
+/* -------------------------------- rutas log ------------------------------- */
 function auth(req, res, next) {
   if (req.isAuthenticated()) {
     next();
@@ -177,6 +212,26 @@ app.get("/logout", (req, res, next) => {
     res.redirect("/");
   });
 });
+
+/* ------------------------------- rutas info yargs ------------------------------- */
+
+app.get("/info", (req, res) => {
+  res.json(server_info);
+});
+
+/* --------------------------------- randoms -------------------------------- */
+
+app.get("/random", (req, res) => {
+  const cant = req.query.cant || 1000000;
+  const child = fork(
+    path.resolve(process.cwd(), "./randomNumberController.js")
+  );
+  child.send(cant);
+  child.on("message", (msg) => {
+    res.json({ numeros: msg });
+  });
+});
+
 /* -------------------------------------------------------------------------- */
 /*                               conexion socket                              */
 /* -------------------------------------------------------------------------- */
@@ -202,7 +257,7 @@ io.on("connection", async (socket) => {
 });
 
 /*============================[Servidor]============================*/
-const PORT = 8080 || process.env.PORT;
+const PORT = port || 8080;
 const server = app.listen(PORT, () => {
   console.log(`Servidor escuchando en puerto ${PORT}`);
 });
